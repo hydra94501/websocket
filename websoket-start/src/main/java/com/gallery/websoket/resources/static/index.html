@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket 测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #message-container {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ccc;
+            overflow-y: scroll;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        #input-message {
+            width: 80%;
+            padding: 8px;
+            font-size: 16px;
+        }
+        #send-button {
+            padding: 8px 16px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>WebSocket 测试</h1>
+
+<div>
+    <label for="userId">用户 ID：</label>
+    <input type="text" id="userId" placeholder="输入用户 ID" value="111">
+</div>
+
+<div>
+    <button id="connect-button">连接 WebSocket</button>
+    <button id="disconnect-button" disabled>断开连接</button>
+</div>
+
+<div id="message-container"></div>
+
+<div>
+    <input type="text" id="input-message" placeholder="输入消息">
+    <button id="send-button" disabled>发送消息</button>
+</div>
+
+<script>
+    let socket;
+    const messageContainer = document.getElementById('message-container');
+    const userIdInput = document.getElementById('userId');
+    const connectButton = document.getElementById('connect-button');
+    const disconnectButton = document.getElementById('disconnect-button');
+    const sendButton = document.getElementById('send-button');
+    const inputMessage = document.getElementById('input-message');
+
+    // 连接 WebSocket
+    connectButton.addEventListener('click', function () {
+        const userId = userIdInput.value.trim();
+        if (!userId) {
+            alert("请输入用户 ID！");
+            return;
+        }
+
+        socket = new WebSocket(`ws://localhost:8080/websocket?userId=${userId}`);
+
+        socket.onopen = function (event) {
+            console.log("WebSocket 连接已建立");
+
+            // 发送一个带有用户 ID 的消息到服务器
+            // socket.send(JSON.stringify({ type: "join", userId: userId }));
+
+            // 更新 UI
+            connectButton.disabled = true;
+            disconnectButton.disabled = false;
+            sendButton.disabled = false;
+        };
+
+        socket.onmessage = function (event) {
+            console.log(event.data)
+            const message = JSON.parse(event.data);
+
+            displayMessage(message.content, "received");
+        };
+
+        socket.onerror = function (error) {
+            console.error("WebSocket 错误:", error);
+        };
+
+        socket.onclose = function () {
+            console.log("WebSocket 连接已关闭");
+
+            // 更新 UI
+            connectButton.disabled = false;
+            disconnectButton.disabled = true;
+            sendButton.disabled = true;
+        };
+    });
+
+    // 断开 WebSocket 连接
+    disconnectButton.addEventListener('click', function () {
+        if (socket) {
+            socket.close();
+        }
+    });
+
+    // 发送消息
+    sendButton.addEventListener('click', function () {
+        const messageContent = inputMessage.value.trim();
+        if (!messageContent) {
+            alert("请输入消息！");
+            return;
+        }
+
+        const message = { type: "message", content: messageContent };
+
+        // 将消息发送到 WebSocket 服务器
+        socket.send(JSON.stringify(message));
+
+        // 清空输入框
+        inputMessage.value = '';
+        displayMessage(messageContent, "sent");
+    });
+
+    // 显示消息
+    function displayMessage(content, type) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = type === "sent" ? 'sent-message' : 'received-message';
+        messageDiv.textContent = content;
+        messageContainer.appendChild(messageDiv);
+
+        // 滚动到最后一条消息
+        messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+</script>
+
+</body>
+</html>
