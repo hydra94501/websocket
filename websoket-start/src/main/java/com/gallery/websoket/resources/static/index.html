@@ -65,7 +65,7 @@
             return;
         }
 
-        socket = new WebSocket(`ws://localhost:8080/websocket?userId=${userId}`);
+        socket = new WebSocket(`ws://localhost:8081/websocket?userId=${userId}`);
 
         socket.onopen = function (event) {
             console.log("WebSocket 连接已建立");
