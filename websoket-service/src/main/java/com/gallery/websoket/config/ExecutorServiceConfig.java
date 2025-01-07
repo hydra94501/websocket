@@ -22,7 +22,7 @@ public class ExecutorServiceConfig {
 
     @Bean
     public ExecutorService executorService() {
-       //  int corePoolSize = Runtime.getRuntime().availableProcessors() * 2;  // 适用于 I/O 密集型任务
+        //  int corePoolSize = Runtime.getRuntime().availableProcessors() * 2;  // 适用于 I/O 密集型任务
         int corePoolSize = Runtime.getRuntime().availableProcessors(); //我们有2个prod服务 用一倍
         int maxPoolSize = corePoolSize * 4;  // 允许更多并发
         long keepAliveTime = 60L;  // 空闲线程保持 60 秒

@@ -12,7 +12,7 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>2.4.2</spring-boot.version>
+        <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
     </properties>
 
     <modules>
@@ -113,29 +113,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.8.1</version> <!-- 确保使用较新的插件版本 -->
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                    <encoding>UTF-8</encoding>
+                    <source>11</source> <!-- 设置为 JDK 11 -->
+                    <target>11</target> <!-- 设置为 JDK 11 -->
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <configuration>
-                    <mainClass>com.gallery.websoket.WebsoketApplication</mainClass>
-                    <skip>true</skip>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>repackage</id>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
