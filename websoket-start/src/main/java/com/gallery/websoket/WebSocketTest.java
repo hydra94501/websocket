@@ -14,7 +14,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class WebSocketTest {
 
-    private static final String SERVER_URI = "ws://192.168.0.109:8081/websocket";  // 替换为实际WebSocket服务器URI
+    private static final String SERVER_URI = "ws://localhost:8082/websocket";  // 替换为实际WebSocket服务器URI
 
     public static void main(String[] args) {
         List<WebSocketSession> sessions = new ArrayList<>();
