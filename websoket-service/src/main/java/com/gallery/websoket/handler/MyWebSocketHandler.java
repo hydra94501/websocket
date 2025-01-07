@@ -2,6 +2,7 @@ package com.gallery.websoket.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gallery.websoket.model.MyWebSocketMessage;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -10,12 +11,14 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+
+@Slf4j
 public class MyWebSocketHandler extends TextWebSocketHandler {
 
     // 存储已连接的客户端
     private final Map<String, WebSocketSession> userSessions = new HashMap<>();
-
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -26,7 +29,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             userSessions.put(userId, session);
             System.out.println("客户端 " + userId + " 已连接，session ID: " + session.getId());
         } else {
-            System.out.println("客户端未提供用户ID，无法建立连接");
+            log.info("客户端未提供用户ID，无法建立连接");
             session.close();
         }
     }
@@ -36,7 +39,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         // 处理接收到的消息
         String payload = message.getPayload();
         //消息转换为json
-        System.out.println("收到客户端消息: " + payload);
+        log.info("收到客户端消息: " + payload);
         if (!StringUtils.isEmpty(payload)) {
             try {
                 JSONObject messageJson = JSONObject.parseObject(payload);
@@ -57,7 +60,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         String userId = (String) session.getAttributes().get("userId");
         if (userId != null) {
             userSessions.remove(userId);
-            System.out.println("客户端 " + userId + " 已断开连接");
+            log.info("客户端 " + userId + " 已断开连接");
         }
     }
 
@@ -66,7 +69,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         WebSocketSession session = userSessions.get(userId);
         if (session != null && session.isOpen()) {
             session.sendMessage(new TextMessage(JSONObject.toJSONString(message)));
-            System.out.println("消息发送给用户 " + userId + ": " + message.getContent());
+            log.info("消息发送给用户 " + userId + ": " + message.getContent());
         } else {
             throw new RuntimeException("无法发送消息给用户 " + userId + "，用户连接已关闭");
         }
@@ -77,7 +80,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         for (WebSocketSession session : userSessions.values()) {
             if (session.isOpen()) {
                 session.sendMessage(new TextMessage(JSONObject.toJSONString(message)));
-                System.out.println("消息广播给用户: " + session.getId());
+                log.info("消息广播给用户: " + session.getId());
             }
         }
     }
