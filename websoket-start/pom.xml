@@ -33,24 +33,35 @@
 
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
+                <version>2.6</version>
                 <configuration>
                     <archive>
                         <manifest>
-                            <!--是否在manifest文件中添加classpath。默认为false。-->
                             <addClasspath>true</addClasspath>
-                            <!--指定类路径前缀，也就是依赖的jar包所在的文件夹-->
                             <classpathPrefix>lib/</classpathPrefix>
-                            <!--指定启动类--> <mainClass>com.gallery.websoket.WebsoketApplication</mainClass>
+                            <mainClass>com.gallery.websoket.WebsoketApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
