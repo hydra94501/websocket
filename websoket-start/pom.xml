@@ -38,7 +38,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.example.MainClass</mainClass>
+                            <mainClass>com.gallery.websoket.WebsoketApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
