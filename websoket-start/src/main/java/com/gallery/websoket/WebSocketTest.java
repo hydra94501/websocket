@@ -14,6 +14,7 @@ import java.util.concurrent.CountDownLatch;
 
 public class WebSocketTest {
 
+//    private static final String SERVER_URI = "ws://8.217.99.156:8082/websocket";  // 替换为实际WebSocket服务器URI
     private static final String SERVER_URI = "ws://localhost:8082/websocket";  // 替换为实际WebSocket服务器URI
 
     public static void main(String[] args) {
@@ -48,10 +49,10 @@ public class WebSocketTest {
         };
 
         // 创建并连接1000个客户端
-        for (int i = 0; i <= 10000; i++) {
+        for (int i = 0; i <= 6; i++) {
             try {
                 String userId = UUID.randomUUID().toString();
-                WebSocketSession session = client.doHandshake(handler, SERVER_URI+"?userId="+userId).get();
+                WebSocketSession session = client.doHandshake(handler, SERVER_URI+"?userId="+userId+"&tId="+222).get();
                 sessions.add(session);
                 System.out.println("客户端 " + (i + 1) + " 已连接。");
             } catch (Exception e) {

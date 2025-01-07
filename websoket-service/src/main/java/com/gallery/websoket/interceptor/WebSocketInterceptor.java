@@ -21,8 +21,9 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
             //获取参数
             String userId = serverHttpRequest.getServletRequest().getParameter("userId");
             String name = serverHttpRequest.getServletRequest().getParameter("name");
-            System.out.println("拦截入参:" + userId);
+            String tId = serverHttpRequest.getServletRequest().getParameter("tId");
             attributes.put("userId", userId);
+            attributes.put("tId", tId);
             if (name == null) {
                 // 如果参数为存0 然后判断这个参数是否为0就可以了
                 attributes.put("name", "0");
