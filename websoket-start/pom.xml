@@ -43,7 +43,11 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.gallery.websoket.WebsoketApplication</mainClass>
+                            <!--是否在manifest文件中添加classpath。默认为false。-->
+                            <addClasspath>true</addClasspath>
+                            <!--指定类路径前缀，也就是依赖的jar包所在的文件夹-->
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <!--指定启动类--> <mainClass>com.gallery.websoket.WebsoketApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
