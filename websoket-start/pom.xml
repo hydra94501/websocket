@@ -13,10 +13,6 @@
     <description>入口模块，引导工程启动以及基础配置</description>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId> <!-- 添加Spring Boot Starter -->
-        </dependency>
-        <dependency>
             <groupId>com.gallery</groupId>
             <artifactId>websoket-service</artifactId>
         </dependency>
