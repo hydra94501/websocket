@@ -89,7 +89,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 // 使用线程池异步处理每个 WebSocket 会话的消息发送
                 executorService.submit(new BroadcastTask(session, message, count++));
 //                session.sendMessage(new TextMessage(JSONObject.toJSONString(message)));
-                log.info("消息广播给用户: " + session.getId());
+//                log.info("消息广播给用户: " + session.getId());
             }
         }
     }
