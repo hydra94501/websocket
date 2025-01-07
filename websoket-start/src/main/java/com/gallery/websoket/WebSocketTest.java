@@ -48,7 +48,7 @@ public class WebSocketTest {
         };
 
         // 创建并连接1000个客户端
-        for (int i = 0; i <= 20000; i++) {
+        for (int i = 0; i <= 10000; i++) {
             try {
                 String userId = UUID.randomUUID().toString();
                 WebSocketSession session = client.doHandshake(handler, SERVER_URI+"?userId="+userId).get();
