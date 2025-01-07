@@ -19,6 +19,7 @@
         <module>websoket-start</module>
         <module>websoket-web</module>
         <module>websoket-service</module>
+        <module>websoket-common</module>
     </modules>
 
     <dependencies>
@@ -97,6 +98,11 @@
             <dependency>
                 <groupId>com.gallery</groupId>
                 <artifactId>websoket-service</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.gallery</groupId>
+                <artifactId>websoket-common</artifactId>
                 <version>0.0.1-SNAPSHOT</version>
             </dependency>
         </dependencies>

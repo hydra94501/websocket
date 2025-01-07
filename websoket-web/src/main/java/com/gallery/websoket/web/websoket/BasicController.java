@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.gallery.websoket.demos.web;
+package com.gallery.websoket.web.websoket;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;

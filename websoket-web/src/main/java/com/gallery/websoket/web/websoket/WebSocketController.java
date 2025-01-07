@@ -1,4 +1,4 @@
-package com.gallery.websoket.demos.web.websoket;
+package com.gallery.websoket.web.websoket;
 
 
 import com.gallery.websoket.model.MyWebSocketMessage;

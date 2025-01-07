@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.gallery.websoket.demos.web;
+package com.gallery.websoket.web.websoket;
 
 /**
  * @author <a href="mailto:chenxilzx1@gmail.com">theonefx</a>

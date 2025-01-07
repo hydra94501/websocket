@@ -1,4 +1,4 @@
-package com.gallery.websoket.constant;
+package com.gallery.websoket.constants;
 
 public class ProjectConstant {
 
