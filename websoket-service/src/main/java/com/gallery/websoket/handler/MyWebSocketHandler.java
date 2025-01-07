@@ -14,7 +14,7 @@ import java.util.Map;
 public class MyWebSocketHandler extends TextWebSocketHandler {
 
     // 存储已连接的客户端
-    private final Map<Long, WebSocketSession> userSessions = new HashMap<>();
+    private final Map<String, WebSocketSession> userSessions = new HashMap<>();
 
 
     @Override
@@ -23,7 +23,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         String userId = (String) session.getAttributes().get("userId");
 //        String userId = (String) session.getUri().getQuery();
         if (userId != null) {
-            userSessions.put(Long.parseLong(userId), session);
+            userSessions.put(userId, session);
             System.out.println("客户端 " + userId + " 已连接，session ID: " + session.getId());
         } else {
             System.out.println("客户端未提供用户ID，无法建立连接");
@@ -44,7 +44,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 MyWebSocketMessage webSocketMessage = new MyWebSocketMessage();
                 webSocketMessage.setContent(messageJson.get("content").toString());
                 // 例如，发送给发送者自己
-                sendMessageToUser(Long.parseLong(session.getAttributes().get("userId").toString()), webSocketMessage);
+                sendMessageToUser(session.getAttributes().get("userId").toString(), webSocketMessage);
             } catch (Exception e) {
                 throw new RuntimeException("消息接收失败，消息格式错误！");
             }
@@ -56,13 +56,13 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         // 客户端断开连接时触发
         String userId = (String) session.getAttributes().get("userId");
         if (userId != null) {
-            userSessions.remove(Long.parseLong(userId));
+            userSessions.remove(userId);
             System.out.println("客户端 " + userId + " 已断开连接");
         }
     }
 
     // 发送消息给指定的用户
-    public void sendMessageToUser(Long userId, MyWebSocketMessage message) throws Exception {
+    public void sendMessageToUser(String userId, MyWebSocketMessage message) throws Exception {
         WebSocketSession session = userSessions.get(userId);
         if (session != null && session.isOpen()) {
             session.sendMessage(new TextMessage(JSONObject.toJSONString(message)));

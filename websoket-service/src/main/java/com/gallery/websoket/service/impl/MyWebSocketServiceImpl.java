@@ -18,7 +18,7 @@ public class MyWebSocketServiceImpl implements MyWebSocketService {
 
     @Override
     public void sendMessageToUser(MyWebSocketMessage message) throws Exception {
-        Long receiveUserId = message.getReceiveUserId();
+        String receiveUserId = message.getReceiveUserId();
         myWebSocketHandler.sendMessageToUser(receiveUserId, message);
     }
 

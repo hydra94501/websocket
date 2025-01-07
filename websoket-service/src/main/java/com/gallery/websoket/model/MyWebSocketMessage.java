@@ -23,12 +23,12 @@ public class MyWebSocketMessage implements Serializable {
     /**
      * 发送用户ID
      */
-    private Long sendUserId;
+    private String sendUserId;
 
     /**
      * 接收用户ID
      */
-    private Long receiveUserId;
+    private String receiveUserId;
 
     /**
      * 消息类型
