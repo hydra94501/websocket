@@ -1,7 +1,10 @@
 package com.gallery.websoket.web.websoket;
 
 
+import com.gallery.websoket.enums.ResultCodeEnum;
+import com.gallery.websoket.exception.BizException;
 import com.gallery.websoket.model.MyWebSocketMessage;
+import com.gallery.websoket.result.R;
 import com.gallery.websoket.service.MyWebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,12 +30,12 @@ public class WebSocketController {
      * @return 响应结果1
      */
     @PostMapping("/send")
-    public String sendMessage(@RequestBody MyWebSocketMessage message) {
+    public R sendMessage(@RequestBody MyWebSocketMessage message) {
         try {
             myWebSocketService.sendMessageToUser(message);
-            return "Message sent successfully!";
+            return R.ok();
         } catch (Exception e) {
-            return "Failed to send message: " + e.getMessage();
+            throw new BizException("发送失败");
         }
     }
 
@@ -43,12 +46,12 @@ public class WebSocketController {
      * @return 响应结果
      */
     @PostMapping("/broadcast")
-    public String broadcastMessage(@RequestBody MyWebSocketMessage message) {
+    public R broadcastMessage(@RequestBody MyWebSocketMessage message) {
         try {
             myWebSocketService.broadcastMessage(message);
-            return "Message broadcasted successfully!";
+            return R.ok();
         } catch (Exception e) {
-            return "Failed to broadcast message: " + e.getMessage();
+            throw new BizException("发送失败");
         }
     }
 }

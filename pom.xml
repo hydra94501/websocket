@@ -13,6 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.3.12.RELEASE</spring-boot.version>
+        <mybatis.plus.starter.version>3.5.6</mybatis.plus.starter.version>  <!-- mybatis plus -->
     </properties>
 
     <modules>
@@ -38,6 +39,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <!-- MyBatis-Plus 核心依赖 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis.plus.starter.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.kafka</groupId>
