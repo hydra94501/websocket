@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STOMP WebSocket Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/dist/stomp.min.js"></script>
+</head>
+<body>
+<h1>STOMP WebSocket Example</h1>
+<div>
+    <label for="username">Username:</label>
+    <input type="text" id="username" />
+    <button onclick="connect()">Connect</button>
+</div>
+<div>
+    <label for="message">Send a message:</label>
+    <input type="text" id="message" />
+    <button onclick="sendMessage()">Send</button>
+</div>
+<div>
+    <label for="receiver">Receiver (User ID):</label>
+    <input type="text" id="receiver" />
+    <button onclick="sendToUser()">Send to User</button>
+</div>
+<div id="response"></div>
+
+<script>
+    var socket;
+    var stompClient;
+    var username;
+
+    function connect() {
+        username = document.getElementById('username').value;
+        if (!username) {
+            alert("Username is required!");
+            return;
+        }
+
+        socket = new SockJS('/message?userId=' + username + '&tId=123');
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+
+            // 订阅特定用户的消息队列
+            stompClient.subscribe('/user/' + username + '/queue/reply', function(messageOutput) {
+                document.getElementById('response').innerHTML = "Received: " + messageOutput.body;
+            });
+        });
+    }
+
+    function sendMessage() {
+        var message = document.getElementById('message').value;
+        stompClient.send("/app/sendMessage", {}, message);
+    }
+
+    function sendToUser() {
+        var message = document.getElementById('message').value;
+        var receiver = document.getElementById('receiver').value;
+        stompClient.send("/app/sendToUser", {}, JSON.stringify({ message: message, userId: receiver }));
+    }
+</script>
+</body>
+</html>

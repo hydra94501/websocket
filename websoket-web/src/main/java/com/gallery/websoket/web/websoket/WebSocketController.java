@@ -1,12 +1,12 @@
 package com.gallery.websoket.web.websoket;
 
 
-import com.gallery.websoket.enums.ResultCodeEnum;
 import com.gallery.websoket.exception.BizException;
 import com.gallery.websoket.model.MyWebSocketMessage;
 import com.gallery.websoket.result.R;
 import com.gallery.websoket.service.MyWebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +29,7 @@ public class WebSocketController {
      * @param message WebSocket 消息
      * @return 响应结果1
      */
-    @PostMapping("/send")
+    @MessageMapping("/send2user")
     public R sendMessage(@RequestBody MyWebSocketMessage message) {
         try {
             myWebSocketService.sendMessageToUser(message);
