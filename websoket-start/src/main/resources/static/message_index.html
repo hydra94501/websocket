@@ -5,32 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STOMP WebSocket Example</title>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/dist/stomp.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 </head>
 <body>
 <h1>STOMP WebSocket Example</h1>
 <div>
     <label for="username">Username:</label>
-    <input type="text" id="username" />
+    <input type="text" id="username" placeholder="Enter your username"/>
     <button onclick="connect()">Connect</button>
 </div>
 <div>
-    <label for="message">Send a message:</label>
-    <input type="text" id="message" />
-    <button onclick="sendMessage()">Send</button>
+    <label for="message">Message:</label>
+    <input type="text" id="message" placeholder="Enter your message"/>
+    <button onclick="sendMessage()">Send to All</button>
 </div>
 <div>
     <label for="receiver">Receiver (User ID):</label>
-    <input type="text" id="receiver" />
+    <input type="text" id="receiver" placeholder="Enter receiver's username"/>
     <button onclick="sendToUser()">Send to User</button>
 </div>
-<div id="response"></div>
+<div id="response" style="margin-top: 20px;">
+    <!-- 使用ul列表显示所有接收到的消息 -->
+    <ul id="messageList"></ul>
+</div>
 
 <script>
     var socket;
     var stompClient;
     var username;
 
+    // 连接到 WebSocket 服务
     function connect() {
         username = document.getElementById('username').value;
         if (!username) {
@@ -38,28 +42,61 @@
             return;
         }
 
+        // 创建 SockJS 连接，并传递 userId 和 tId
         socket = new SockJS('/message?userId=' + username + '&tId=123');
-        stompClient = Stomp.over(socket);
+        stompClient = Stomp.over(socket);  // 使用 STOMP 协议封装 SockJS
 
-        stompClient.connect({}, function(frame) {
+        // 连接 STOMP
+        stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
 
+
+            // 订阅 `/topic/greetings` 来接收广播消息
+            stompClient.subscribe('/topic/greetings', function(messageOutput) {
+                // 每次接收到消息时，将消息添加到列表中
+                var message = messageOutput.body;
+                displayMessage(message);
+            });
+
             // 订阅特定用户的消息队列
-            stompClient.subscribe('/user/' + username + '/queue/reply', function(messageOutput) {
-                document.getElementById('response').innerHTML = "Received: " + messageOutput.body;
+            stompClient.subscribe('/user/' + username + '/queue/reply', function (messageOutput) {
+                // 每次接收到消息时，将消息添加到列表中
+                var message = messageOutput.body;
+                displayMessage(message);
             });
         });
     }
 
+    // 发送广播消息
     function sendMessage() {
         var message = document.getElementById('message').value;
-        stompClient.send("/app/sendMessage", {}, message);
+        if (!message) {
+            alert("Message cannot be empty!");
+            return;
+        }
+        // 发送广播消息到 /api/message/sendMessage
+        stompClient.send("/api/message/sendMessage", {}, message);
     }
 
+    // 向特定用户发送消息
     function sendToUser() {
         var message = document.getElementById('message').value;
         var receiver = document.getElementById('receiver').value;
-        stompClient.send("/app/sendToUser", {}, JSON.stringify({ message: message, userId: receiver }));
+        if (!message || !receiver) {
+            alert("Message and Receiver (User ID) are required!");
+            return;
+        }
+
+        // 将 messagePayload 对象转为 JSON 格式
+        stompClient.send("/api/message/sendToUser", {"receiver": receiver}, message);
+    }
+
+    // 显示接收到的消息
+    function displayMessage(message) {
+        var messageList = document.getElementById('messageList');
+        var li = document.createElement('li');
+        li.textContent = message;
+        messageList.appendChild(li); // 将新消息添加到消息列表中
     }
 </script>
 </body>

@@ -1,6 +1,7 @@
 package com.gallery.websoket.web.websoket;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.gallery.websoket.exception.BizException;
 import com.gallery.websoket.model.MyWebSocketMessage;
 import com.gallery.websoket.result.R;
@@ -21,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/message")
 public class MessageWebSoketController {
 
-
     private final SimpMessagingTemplate messagingTemplate;
 
     @Autowired
@@ -35,7 +35,12 @@ public class MessageWebSoketController {
     @MessageMapping("/sendToUser")
     public void sendToUser(String message, StompHeaderAccessor accessor) {
         // 获取 userId
-        String userId = (String) accessor.getSessionAttributes().get("userId");
+//        JSONObject message = .toJSON(message);
+        String userId = accessor.getNativeHeader("receiver").get(0);
+        if (userId == null) {
+            log.error("用户ID为空，发送失败！");
+            return;
+        }
         log.info("发送给特定用户 {} 的消息: {}", userId, message);
         // 向特定用户发送消息
         messagingTemplate.convertAndSendToUser(userId, "/queue/reply", "Direct message: " + message);
@@ -51,3 +56,4 @@ public class MessageWebSoketController {
         messagingTemplate.convertAndSend("/topic/greetings", "Hello, " + message);
     }
 }
+
