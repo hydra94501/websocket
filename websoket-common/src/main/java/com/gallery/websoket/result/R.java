@@ -54,7 +54,7 @@ public class R<T> implements Serializable {
      * 业务处理成功
      **/
     public static <T> R<T> ok(T data) {
-        return new R<>(ResultCodeEnum.SUCCESS.getCode(), ResultCodeEnum.SUCCESS.getKey(), data, null);
+        return new R<>(ResultCodeEnum.SUCCESS.getCode(), ResultCodeEnum.SUCCESS.getMsg(), data, null);
     }
 
 
@@ -81,12 +81,17 @@ public class R<T> implements Serializable {
     /**
      * 业务处理失败
      **/
-    public static R fail(ResultCodeEnum resultCodeEnum, String... params) {
+    public static R fail(ResultCodeEnum resultCodeEnum, String customMsg) {
 
-        if (params == null || params.length <= 0) {
-            return new R(resultCodeEnum.getCode(), resultCodeEnum.getKey(), null, null);
-        }
-        return new R(resultCodeEnum.getCode(), resultCodeEnum.getKey(), null, null);
+        return new R(resultCodeEnum.getCode(), customMsg, null, null);
+    }
+
+    /**
+     * 业务处理失败
+     **/
+    public static R fail(ResultCodeEnum resultCodeEnum) {
+
+        return new R(resultCodeEnum.getCode(), resultCodeEnum.getMsg(), null, null);
     }
 
     /**

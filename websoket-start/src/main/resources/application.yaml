@@ -23,7 +23,7 @@ spring:
       number_format: '#' #数字格式进行原样显示，不加格式化字符例如  100,00
   datasource:
     # yml填写url连接串， 无需将&符号进行转义
-    url: jdbc:mysql://34.150.92.75:3306/shortVideo?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://34.150.92.75:3306/message_websoket?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
     username: root
     password: Xw%N0wd2e@7F.V
     druid:
@@ -53,3 +53,10 @@ spring:
     database: 2    #1库：其他项目  #2库：websoket
     timeout: 1000
     password: admin*&^sdgh
+
+logging:
+  level:
+    root: INFO
+    com.gallery.websoket: DEBUG  # 设置指定包的日志级别为 DEBUG
+  file:
+    name: logs/application.log   # 输出日志到指定的文件

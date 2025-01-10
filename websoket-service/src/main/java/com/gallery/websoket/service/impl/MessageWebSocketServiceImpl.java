@@ -1,41 +1,31 @@
-package com.gallery.websoket.web.websoket;
+package com.gallery.websoket.service.impl;
 
-
-import com.alibaba.fastjson.JSONObject;
-import com.gallery.websoket.exception.BizException;
+import com.gallery.websoket.handler.MyWebSocketHandler;
 import com.gallery.websoket.model.MyWebSocketMessage;
-import com.gallery.websoket.result.R;
+import com.gallery.websoket.service.MessageWebSocketService;
 import com.gallery.websoket.service.MyWebSocketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 @Slf4j
-@RestController
-@RequestMapping("/api/message")
-public class MessageWebSoketController {
+@Service
+public class MessageWebSocketServiceImpl implements MessageWebSocketService {
 
     private final SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public MessageWebSoketController(SimpMessagingTemplate messagingTemplate) {
+    public MessageWebSocketServiceImpl(SimpMessagingTemplate messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
     /**
-     * 发送消息给特定用户
+     * 向特定用户发送消息
      */
-    @MessageMapping("/sendToUser")
     public void sendToUser(String message, StompHeaderAccessor accessor) {
         // 获取 userId
-//        JSONObject message = .toJSON(message);
         String userId = accessor.getNativeHeader("receiver").get(0);
         if (userId == null) {
             log.error("用户ID为空，发送失败！");
@@ -49,11 +39,8 @@ public class MessageWebSoketController {
     /**
      * 广播消息给所有用户
      */
-    @MessageMapping("/sendMessage")
     public void sendMessage(String message) {
-        log.info("收到客户端消息: {}", message);
-        // 广播消息给所有用户
-        messagingTemplate.convertAndSend("/topic/greetings", "Hello, " + message);
+        log.info("收到广播消息: {}", message);
+        messagingTemplate.convertAndSend("/topic/*", "Hello, " + message);
     }
 }
-

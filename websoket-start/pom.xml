@@ -20,7 +20,18 @@
             <groupId>com.gallery</groupId>
             <artifactId>websoket-web</artifactId>
         </dependency>
-
+        <!-- MyBatis-Plus Generator 依赖 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator</artifactId>
+            <version>3.5.9</version>
+        </dependency>
+        <!-- Apache Velocity -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>1.7</version>
+        </dependency>
 
         <dependency>
             <groupId>org.java-websocket</groupId>

@@ -49,6 +49,7 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis.plus.starter.version}</version>
         </dependency>
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -79,6 +80,20 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <!-- Springfox Swagger 2 (用于生成 Swagger 文档) -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version> <!-- 这是一个稳定版本 -->
+        </dependency>
+
+        <!-- Springfox Swagger UI (用于展示 Swagger UI 页面) -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version> <!-- 版本与swagger2相同 -->
         </dependency>
 
 

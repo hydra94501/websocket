@@ -21,9 +21,9 @@ public class BizException extends RuntimeException{
 		this.apiRes = R.customFail(msg);
 	}
 
-	public BizException(ResultCodeEnum apiCodeEnum, String... params) {
+	public BizException(ResultCodeEnum apiCodeEnum, String customMsg) {
 		super();
-		apiRes = R.fail(apiCodeEnum, params);
+		apiRes = R.fail(apiCodeEnum, customMsg);
 	}
 
 	public BizException(R apiRes) {
