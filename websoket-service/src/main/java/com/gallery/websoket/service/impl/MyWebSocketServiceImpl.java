@@ -20,8 +20,7 @@ public class MyWebSocketServiceImpl implements MyWebSocketService {
     @Override
     public void sendMessageToUser(MyWebSocketMessage message) throws Exception {
         String receiveUserId = message.getReceiveUserId();
-        String receiveUserTId = message.getReceiveTId();
-        myWebSocketHandler.sendMessageToUser(receiveUserTId, receiveUserId, message);
+        myWebSocketHandler.sendMessageToUser(receiveUserId, message);
     }
 
     @Override

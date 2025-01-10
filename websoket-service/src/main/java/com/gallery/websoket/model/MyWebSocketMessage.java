@@ -21,12 +21,6 @@ public class MyWebSocketMessage implements Serializable {
     private String sendUserNickname;
 
     /**
-     * 发送用户TID
-     */
-    private String sendTId;
-
-
-    /**
      * 发送用户ID
      */
     private String sendUserId;
@@ -35,11 +29,6 @@ public class MyWebSocketMessage implements Serializable {
      * 接收用户ID
      */
     private String receiveUserId;
-
-    /**
-     * 接收用户TID
-     */
-    private String receiveTId;
 
     /**
      * 消息类型

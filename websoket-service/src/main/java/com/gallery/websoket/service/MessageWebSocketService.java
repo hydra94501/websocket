@@ -1,22 +1,30 @@
 package com.gallery.websoket.service;
 
+import com.gallery.websoket.enums.MessageTargetType;
+import com.gallery.websoket.factory.MessagePushStrategyFactory;
 import com.gallery.websoket.model.MyWebSocketMessage;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
+import org.springframework.stereotype.Service;
 
-public interface MessageWebSocketService {
+@Service
+public class MessageWebSocketService {
 
-    /**
-     * 发送消息给指定用户
-     *
-     * @param message WebSocket 消息
-     */
-    void sendToUser(String message, StompHeaderAccessor accessor);
 
-    /**
-     * 广播消息给所有已连接的用户
-     *
-     * @param message WebSocket 消息
-     */
-    void sendMessage(String message);
+    private final MessagePushStrategyFactory strategyFactory;
+
+
+    public MessageWebSocketService(MessagePushStrategyFactory strategyFactory) {
+        this.strategyFactory = strategyFactory;
+    }
+
+    public void sendMessage(MessageTargetType targetType, MyWebSocketMessage message) {
+        // 根据目标类型选择推送策略并发送消息
+        MessagePushStrategy strategy = strategyFactory.getStrategy(targetType);
+        if (strategy != null) {
+            strategy.sendMessage(message);
+        } else {
+            throw new IllegalArgumentException("Unsupported target type: " + targetType);
+        }
+    }
+
 
 }
