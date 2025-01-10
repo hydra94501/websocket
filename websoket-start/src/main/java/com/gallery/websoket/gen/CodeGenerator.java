@@ -58,7 +58,7 @@ public class CodeGenerator {
         //tables.add("category");
         // 4、策略配置
         StrategyConfig strategy = new StrategyConfig.Builder()
-                .addInclude("ws_topic,ws_group,ws_group_member,ws_user,ws_user_subscription")//设置表名称，不设置读数据库所有表，设置可以是单表名，也可以是多表名逗号隔开，或者是集合列表
+                .addInclude("ws_topic_group")//设置表名称，不设置读数据库所有表，设置可以是单表名，也可以是多表名逗号隔开，或者是集合列表
                 //.addExclude("system_user")//增加表排除匹配(内存过滤)	include 与 exclude 只能配置一项
 //                .addTablePrefix("event_")//设置表前缀过滤，如event_user，设置以后生成的实体类名会是User
                 .mapperBuilder()

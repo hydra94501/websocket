@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gallery.websoket.mapper.WsTopicGroupMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gallery.websoket.model.WsTopicGroup">
+        <id column="id" property="id" />
+        <result column="topic_id" property="topicId" />
+        <result column="group_id" property="groupId" />
+        <result column="status" property="status" />
+        <result column="subscribed_at" property="subscribedAt" />
+        <result column="unsubscribed_at" property="unsubscribedAt" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, topic_id, group_id, status, subscribed_at, unsubscribed_at
+    </sql>
+
+</mapper>
