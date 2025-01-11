@@ -1,6 +1,6 @@
 package com.gallery.websoket.service;
 
-import com.gallery.websoket.model.MyWebSocketMessage;
+import com.gallery.websoket.dto.parm.MyWebSocketMessage;
 
 public interface MyWebSocketService {
 

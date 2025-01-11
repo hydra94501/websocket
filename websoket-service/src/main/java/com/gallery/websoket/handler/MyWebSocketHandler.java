@@ -1,7 +1,7 @@
 package com.gallery.websoket.handler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.gallery.websoket.model.MyWebSocketMessage;
+import com.gallery.websoket.dto.parm.MyWebSocketMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -10,7 +10,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;

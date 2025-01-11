@@ -2,7 +2,7 @@ package com.gallery.websoket.web.websoket;
 
 
 import com.gallery.websoket.exception.BizException;
-import com.gallery.websoket.model.MyWebSocketMessage;
+import com.gallery.websoket.dto.parm.MyWebSocketMessage;
 import com.gallery.websoket.result.R;
 import com.gallery.websoket.service.MyWebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package com.gallery.websoket.service.impl;
 
 import com.gallery.websoket.handler.MyWebSocketHandler;
-import com.gallery.websoket.model.MyWebSocketMessage;
+import com.gallery.websoket.dto.parm.MyWebSocketMessage;
 import com.gallery.websoket.service.MyWebSocketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

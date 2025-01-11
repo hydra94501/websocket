@@ -6,7 +6,6 @@ import com.gallery.websoket.service.impl.message.AllPushStrategy;
 import com.gallery.websoket.service.impl.message.GroupPushStrategy;
 import com.gallery.websoket.service.impl.message.TopicPushStrategy;
 import com.gallery.websoket.service.impl.message.UserPushStrategy;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -35,7 +34,6 @@ public class MessagePushStrategyFactory {
     }
 
     public MessagePushStrategy getStrategy(MessageTargetType type) {
-        // 根据枚举选择对应的策略
         return strategies.get(type);
     }
 }

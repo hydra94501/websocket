@@ -1,6 +1,7 @@
 package com.gallery.websoket.service.impl.message;
 
-import com.gallery.websoket.model.MyWebSocketMessage;
+import com.gallery.websoket.dto.parm.MyWebSocketMessage;
+import com.gallery.websoket.dto.res.MessagePushRes;
 import com.gallery.websoket.service.MessagePushStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -16,7 +17,8 @@ public class UserPushStrategy implements MessagePushStrategy {
     }
 
     @Override
-    public void sendMessage(MyWebSocketMessage message) {
+    public MessagePushRes sendMessage(MyWebSocketMessage message) {
         messagingTemplate.convertAndSendToUser(message.getReceiveUserId(), "/queue/notifications", message);
+        return null;
     }
 }

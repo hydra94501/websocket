@@ -1,7 +1,8 @@
 package com.gallery.websoket.service;
 
-import com.gallery.websoket.model.MyWebSocketMessage;
+import com.gallery.websoket.dto.parm.MyWebSocketMessage;
+import com.gallery.websoket.dto.res.MessagePushRes;
 
 public interface MessagePushStrategy {
-    void sendMessage(MyWebSocketMessage message);
+    MessagePushRes sendMessage(MyWebSocketMessage message);
 }
