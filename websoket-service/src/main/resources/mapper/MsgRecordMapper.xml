@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gallery.websoket.mapper.MsgRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.gallery.websoket.model.MsgRecord">
+        <id column="id" property="id" />
+        <result column="send_user_id" property="sendUserId" />
+        <result column="receive_user_id" property="receiveUserId" />
+        <result column="group_id" property="groupId" />
+        <result column="topic_id" property="topicId" />
+        <result column="message_type" property="messageType" />
+        <result column="content" property="content" />
+        <result column="status" property="status" />
+        <result column="error_message" property="errorMessage" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="extension_field" property="extensionField" />
+        <result column="message_target_type" property="messageTargetType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, send_user_id, receive_user_id, group_id, topic_id, message_type, content, status, error_message, create_time, update_time, extension_field, message_target_type
+    </sql>
+
+</mapper>

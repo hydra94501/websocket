@@ -1,0 +1,76 @@
+package com.gallery.websoket.model;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * <p>
+ * 推送失败记录表
+ * </p>
+ *
+ * @author xwj
+ * @since 2025-01-11
+ */
+@Getter
+@Setter
+  @TableName("msg_push_failed_record")
+public class MsgPushFailedRecord implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+      /**
+     * 自增主键
+     */
+        @TableId(value = "id", type = IdType.AUTO)
+      private Long id;
+
+      /**
+     * 消息记录ID，关联到消息记录表
+     */
+      private Long messageId;
+
+      /**
+     * 推送类型：all（所有人推送），user（指定用户推送），topic（主题推送），group（群组推送）
+     */
+      private String pushType;
+
+      /**
+     * 推送目标的ID（如用户ID、群组ID、主题ID等），如果是群组推送，target_id 表示成员ID
+     */
+      private Long targetId;
+
+      /**
+     * 推送目标的用户ID
+     */
+      private Long userId;
+
+      /**
+     * 推送状态：failed（推送失败），success（重新推送成功）
+     */
+      private String status;
+
+      /**
+     * 失败时的错误信息
+     */
+      private String errorMessage;
+
+      /**
+     * 重试次数，失败后可以重试
+     */
+      private Integer retryCount;
+
+      /**
+     * 记录创建时间
+     */
+      private Date createTime;
+
+      /**
+     * 记录更新时间
+     */
+      private Date updateTime;
+}
