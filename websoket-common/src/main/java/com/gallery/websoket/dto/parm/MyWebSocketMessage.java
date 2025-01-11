@@ -19,21 +19,38 @@ import java.io.Serializable;
 public class MyWebSocketMessage implements Serializable {
 
     /**
-     * 发送用户昵称
+     * 外部系统名称，如live_sys、video_sys、im_sys等
      */
-    @ApiModelProperty(value = "发送用户的昵称", required = true)
-    private String sendUserNickname;
-
+    @ApiModelProperty(value = "外部系统名称，如live_sys、video_sys、im_sys等", required = true)
+    private String systemName;
     /**
      * 发送用户ID
      */
-    @ApiModelProperty(value = "发送用户的ID", required = true)
+    @ApiModelProperty(value = "发送用户的ID")
     private String sendUserId;
+
+    /**
+     * 推送类型：all（所有人推送），user（指定用户推送），topic（主题推送），group（群组推送）
+     */
+    @ApiModelProperty(value = "推送类型：all（所有人推送），user（指定用户推送），topic（主题推送），group（群组推送）")
+    private String messageTargetType;
+
+    /**
+     * 群组ID（如果是群组推送）
+     */
+    @ApiModelProperty(value = "群组ID（如果是群组推送）")
+    private Long groupId;
+
+    /**
+     * 主题ID（如果是主题推送）
+     */
+    @ApiModelProperty(value = "主题ID（如果是主题推送）")
+    private Long topicId;
 
     /**
      * 接收用户ID
      */
-    @ApiModelProperty(value = "接收消息的用户ID", required = true)
+    @ApiModelProperty(value = "接收消息的用户ID")
     private String receiveUserId;
 
     /**

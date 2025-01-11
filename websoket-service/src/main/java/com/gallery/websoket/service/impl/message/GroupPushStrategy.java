@@ -18,8 +18,11 @@ public class GroupPushStrategy implements MessagePushStrategy {
 
     @Override
     public MessagePushRes sendMessage(MyWebSocketMessage message) {
+
         // 向指定群组发送消息
-        messagingTemplate.convertAndSend("/topic/group/" + message.getExtensionField(), message);
-        return null;
+        messagingTemplate.convertAndSend("/topic/group/" + message.getGroupId(), message);
+        MessagePushRes messagePushRes = new MessagePushRes();
+        messagePushRes.setStatus("SUCCESS");
+        return messagePushRes;
     }
 }

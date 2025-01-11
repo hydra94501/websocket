@@ -19,7 +19,9 @@ public class TopicPushStrategy implements MessagePushStrategy {
     @Override
     public MessagePushRes sendMessage(MyWebSocketMessage message) {
         // 向指定Topic发送消息
-        messagingTemplate.convertAndSend("/topic/" + message.getExtensionField(), message);
-        return null;
+        messagingTemplate.convertAndSend("/topic/" + message.getTopicId(), message);
+        MessagePushRes messagePushRes = new MessagePushRes();
+        messagePushRes.setStatus("SUCCESS");
+        return messagePushRes;
     }
 }

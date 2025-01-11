@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface WsUserService extends IService<WsUser> {
 
+    WsUser getUserBySystemNameAndExternalUserId(String systemName,String externalUserId);
+
 }

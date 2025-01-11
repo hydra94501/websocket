@@ -20,6 +20,8 @@ public class AllPushStrategy implements MessagePushStrategy {
     public MessagePushRes sendMessage(MyWebSocketMessage message) {
         // 向所有用户发送消息
         messagingTemplate.convertAndSend("/topic/all", message);
-        return null;
+        MessagePushRes messagePushRes = new MessagePushRes();
+        messagePushRes.setStatus("SUCCESS");
+        return messagePushRes;
     }
 }
