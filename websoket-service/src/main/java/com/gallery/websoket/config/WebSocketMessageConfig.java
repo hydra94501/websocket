@@ -1,7 +1,9 @@
 package com.gallery.websoket.config;
 
 import com.gallery.websoket.interceptor.WebSocketInterceptor;
+import com.gallery.websoket.manager.WebSocketSessionManager;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -13,6 +15,13 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketMessageConfig implements WebSocketMessageBrokerConfigurer {
+
+    private final WebSocketInterceptor webSocketInterceptor;
+
+    @Autowired
+    public WebSocketMessageConfig(WebSocketInterceptor webSocketInterceptor) {
+        this.webSocketInterceptor = webSocketInterceptor;
+    }
 
     /**
      * 添加这个Endpoint，这样在网页中就可以通过websocket连接上服务,
@@ -32,7 +41,8 @@ public class WebSocketMessageConfig implements WebSocketMessageBrokerConfigurer 
          * 5. addInterceptors 添加拦截处理，这里MyPrincipalHandshakeHandler 封装的认证用户信息
          */
         //  这个问题的sendToUser 解决了
-        registry.addEndpoint("/message").addInterceptors(new WebSocketInterceptor()).setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/message").addInterceptors(webSocketInterceptor).setAllowedOrigins("*").withSockJS()
+                .setHeartbeatTime(30000);// 设置心跳时间间隔为30秒（单位：毫秒）
     }
 
 
