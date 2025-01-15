@@ -7,6 +7,8 @@ import com.gallery.websoket.exception.BizException;
 import com.gallery.websoket.factory.MessagePushStrategyFactory;
 import com.gallery.websoket.dto.parm.MyWebSocketMessage;
 import com.gallery.websoket.model.MsgRecord;
+import com.gallery.websoket.model.WsGroup;
+import com.gallery.websoket.model.WsTopic;
 import com.gallery.websoket.model.WsUser;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,16 @@ public class MessageWebSocketService {
     private final MessagePushStrategyFactory strategyFactory;
     private final MsgRecordService msgRecordService;
     private final WsUserService wsUserService;
+    private final WsGroupService wsGroupService;
+    private final WsTopicService wsTopicService;
 
 
-    public MessageWebSocketService(MessagePushStrategyFactory strategyFactory, MsgRecordService msgRecordService, WsUserService wsUserService) {
+    public MessageWebSocketService(MessagePushStrategyFactory strategyFactory, MsgRecordService msgRecordService, WsUserService wsUserService, WsGroupService wsGroupService, WsTopicService wsTopicService) {
         this.strategyFactory = strategyFactory;
         this.msgRecordService = msgRecordService;
         this.wsUserService = wsUserService;
+        this.wsGroupService = wsGroupService;
+        this.wsTopicService = wsTopicService;
     }
 
     /**
@@ -35,6 +41,7 @@ public class MessageWebSocketService {
     private void processBeforeSending(MyWebSocketMessage message) {
         // 记录消息到数据库（例如保存消息记录表）
         MsgRecord msgRecord = new MsgRecord();
+        BeanUtils.copyProperties(message, msgRecord);
         //存发送人用户信息
         WsUser wsUser = wsUserService.getUserBySystemNameAndExternalUserId(message.getSystemName(), message.getSendUserId());
         if (wsUser == null) {
@@ -58,8 +65,18 @@ public class MessageWebSocketService {
             }
         } else if (message.getMessageTargetType().equals(MessageTargetType.GROUP.getType())) {
             //群组推送
+            //查询群组
+           WsGroup wsGroup = wsGroupService.getById(message.getGroupId());
+           if (wsGroup == null) {
+               throw new BizException("推送群组不存在！");
+           }
         } else if (message.getMessageTargetType().equals(MessageTargetType.TOPIC.getType())) {
             //主题推送
+            //查询主题
+            WsTopic wsTopic = wsTopicService.getById(message.getTopicId());
+            if (wsTopic == null) {
+                throw new BizException("推送主题不存在！");
+            }
         } else if (message.getMessageTargetType().equals(MessageTargetType.ALL.getType())) {
             //全部推送
         } else {
@@ -68,7 +85,7 @@ public class MessageWebSocketService {
 
 
 
-        BeanUtils.copyProperties(message, msgRecord);
+
         msgRecord.setStatus(MessageTargetStatus.PENDING.getType());
         msgRecordService.save(msgRecord);
 

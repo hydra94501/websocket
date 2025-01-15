@@ -38,13 +38,13 @@ public class MyWebSocketMessage implements Serializable {
     /**
      * 群组ID（如果是群组推送）
      */
-    @ApiModelProperty(value = "群组ID（如果是群组推送）")
+    @ApiModelProperty(value = "群组名称（如果是群组推送）")
     private Long groupId;
 
     /**
      * 主题ID（如果是主题推送）
      */
-    @ApiModelProperty(value = "主题ID（如果是主题推送）")
+    @ApiModelProperty(value = "主题名称（如果是主题推送）")
     private Long topicId;
 
     /**
