@@ -92,6 +92,8 @@ public class WebSocketMessageConfig implements WebSocketMessageBrokerConfigurer 
          * 1. 配置代理域，可以配置多个，此段代码配置代理目的地的前缀为 /topicTest 或者 /userTest
          *    我们就可以在配置的域上向客户端推送消息
          * 2，进行心跳设置，第一值表示server最小能保证发的心跳间隔毫秒数, 第二个值代码server希望client发的心跳间隔毫秒数
+         * 服务器每 10 秒发送一次心跳包（ping），并期望客户端也能在 10 秒内响应一个心跳包
+         * 如果客户端在 3次心跳超时后仍未响应，服务端可能会认为连接断开并关闭该连接。
          * 3. 可以配置心跳线程调度器 setHeartbeatValue这个不能单独设置，不然不起作用，要配合setTaskScheduler才可以生效
          *    调度器我们可以自己写一个，也可以自己使用默认的调度器 new DefaultManagedTaskScheduler()
          */
@@ -180,7 +182,7 @@ public class WebSocketMessageConfig implements WebSocketMessageBrokerConfigurer 
         // 配置 WebSocket 传输
         registry.setMessageSizeLimit(8192);  // 增加消息大小限制
         registry.setSendBufferSizeLimit(8192); // 增加缓冲区大小
-        registry.setSendTimeLimit(20 * 1000);  // 增加超时设置
+//        registry.setSendTimeLimit(20 * 1000);  // 增加超时设置
     }
 
 
