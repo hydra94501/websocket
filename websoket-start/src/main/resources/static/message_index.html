@@ -217,6 +217,16 @@
         socket = new SockJS('/message?userId=' + username + '&tId=123');
         stompClient = Stomp.over(socket);
 
+        /*
+         * 1. 获取到stomp 子协议后，可以设置心跳连接时间，认证连接，主动断开连接
+         * 2，连接心跳有的版本的stomp.js 是默认开启的，这里我们不管版本，手工设置
+         * 3. 心跳是双向的，客户端开启心跳，必须要服务端支持心跳才行
+         * 4. heartbeat.outgoing 表示客户端给服务端发送心跳的间隔时间
+         * 5. 客户端接收服务端心跳的间隔时间，如果为0 表示客户端不接收服务端心跳
+         */
+        stompClient.heartbeat.outgoing = 10000;
+        stompClient.heartbeat.incoming = 0;
+
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
 

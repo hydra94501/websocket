@@ -16,6 +16,6 @@ public class HeartbeatScheduler {
     // 每隔30秒执行一次检查，检查连接是否超时
     @Scheduled(fixedRate = 30000) // 每30秒执行一次
     public void checkHeartbeats() {
-        sessionManager.checkHeartbeatTimeout(60000);  // 超时设置为60秒
+//        sessionManager.checkHeartbeatTimeout(60000);  // 超时设置为60秒
     }
 }
