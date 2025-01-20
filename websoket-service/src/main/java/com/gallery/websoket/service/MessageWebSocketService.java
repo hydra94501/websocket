@@ -46,7 +46,7 @@ public class MessageWebSocketService {
         WsUser wsUser = wsUserService.getUserBySystemNameAndExternalUserId(message.getSystemName(), message.getSendUserId());
         if (wsUser == null) {
             wsUser = new WsUser();
-            wsUser.setSystemName(message.getReceiveUserId());
+            wsUser.setSystemName(message.getSystemName());
             wsUser.setExternalUserId(message.getReceiveUserId());
             wsUserService.save(wsUser);
             msgRecord.setSendUserId(wsUser.getId());
@@ -66,16 +66,21 @@ public class MessageWebSocketService {
         } else if (message.getMessageTargetType().equals(MessageTargetType.GROUP.getType())) {
             //群组推送
             //查询群组
-           WsGroup wsGroup = wsGroupService.getById(message.getGroupId());
-           if (wsGroup == null) {
-               throw new BizException("推送群组不存在！");
-           }
+            if (null != message.getGroupId()){
+                WsGroup wsGroup = wsGroupService.getById(message.getGroupId());
+                if (wsGroup == null) {
+                    throw new BizException("推送群组不存在！");
+                }
+            }
+
         } else if (message.getMessageTargetType().equals(MessageTargetType.TOPIC.getType())) {
             //主题推送
             //查询主题
-            WsTopic wsTopic = wsTopicService.getById(message.getTopicId());
-            if (wsTopic == null) {
-                throw new BizException("推送主题不存在！");
+            if (null != message.getGroupId()) {
+                WsTopic wsTopic = wsTopicService.getById(message.getTopicId());
+                if (wsTopic == null) {
+                    throw new BizException("推送主题不存在！");
+                }
             }
         } else if (message.getMessageTargetType().equals(MessageTargetType.ALL.getType())) {
             //全部推送
@@ -114,7 +119,7 @@ public class MessageWebSocketService {
         // 根据类型选择推送发送消息
         MessagePushStrategy strategy = strategyFactory.getStrategy(targetType);
         if (strategy != null) {
-            processBeforeSending(message);
+//            processBeforeSending(message);
             //处理
             MessagePushRes messagePushRes = strategy.sendMessage(message);
             processAfterSending(message);

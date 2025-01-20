@@ -18,7 +18,7 @@ public class UserPushStrategy implements MessagePushStrategy {
 
     @Override
     public MessagePushRes sendMessage(MyWebSocketMessage message) {
-        messagingTemplate.convertAndSendToUser(message.getReceiveUserId(), "/queue/notifications", message);
+        messagingTemplate.convertAndSendToUser(message.getReceiveUserId(), "/queue/reply", message);//前缀自动有user，/queue/reply是拼接到userid后面的
         MessagePushRes messagePushRes = new MessagePushRes();
         messagePushRes.setStatus("SUCCESS");
         return messagePushRes;

@@ -20,7 +20,7 @@ public class GroupPushStrategy implements MessagePushStrategy {
     public MessagePushRes sendMessage(MyWebSocketMessage message) {
 
         // 向指定群组发送消息
-        messagingTemplate.convertAndSend("/topic/group/" + message.getGroupId(), message);
+        messagingTemplate.convertAndSend("/topic/group/" + message.getGroupName(), message);
         MessagePushRes messagePushRes = new MessagePushRes();
         messagePushRes.setStatus("SUCCESS");
         return messagePushRes;

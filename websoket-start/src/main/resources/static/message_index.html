@@ -6,35 +6,207 @@
     <title>STOMP WebSocket Example</title>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-top: 40px;
+            font-size: 28px;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .input-group input {
+            width: 75%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #007bff;
+        }
+
+        .input-group button {
+            padding: 12px 24px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-left: 10px;
+        }
+
+        .input-group button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .input-group button:active {
+            background-color: #003f7f;
+        }
+
+        #response {
+            margin-top: 40px;
+        }
+
+        h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 300px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column-reverse;
+        }
+
+        li {
+            margin: 12px 0;
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #f7f7f7;
+            transition: transform 0.3s ease;
+        }
+
+        li:hover {
+            transform: translateX(5px);
+        }
+
+        .message-send {
+            background-color: #e0f7fa;
+            border-left: 5px solid #00bcd4;
+        }
+
+        .message-receive {
+            background-color: #ffebee;
+            border-left: 5px solid #f44336;
+        }
+
+        .message-info {
+            font-size: 14px;
+            color: #777;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .message-content {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .message-sender {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 768px) {
+            .input-group input {
+                width: 100%;
+                margin-right: 0;
+            }
+
+            .input-group button {
+                width: 100%;
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
 <h1>STOMP WebSocket Example</h1>
-<div>
-    <label for="username">Username:</label>
-    <input type="text" id="username" placeholder="Enter your username"/>
-    <button onclick="connect()">Connect</button>
-</div>
-<div>
-    <label for="message">Message:</label>
-    <input type="text" id="message" placeholder="Enter your message"/>
-    <button onclick="sendMessage()">Send to All</button>
-</div>
-<div>
-    <label for="receiver">Receiver (User ID):</label>
-    <input type="text" id="receiver" placeholder="Enter receiver's username"/>
-    <button onclick="sendToUser()">Send to User</button>
-</div>
-<div id="response" style="margin-top: 20px;">
-    <!-- 使用ul列表显示所有接收到的消息 -->
-    <ul id="messageList"></ul>
+<div class="container">
+    <div class="input-group">
+        <input type="text" id="username" placeholder="Enter your username"/>
+        <button onclick="connect()">Connect</button>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="message" placeholder="Enter your message"/>
+    </div>
+
+    <div class="input-group">
+        <button onclick="sendToAll()">Send to All</button>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="receiver" placeholder="Enter receiver's username"/>
+        <button onclick="sendToUser()">Send to User</button>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="group" placeholder="Enter group ID"/>
+        <button onclick="sendToGroup()">Send to Group</button>
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="topic" placeholder="Enter topic ID"/>
+        <button onclick="sendToTopic()">Send to Topic</button>
+    </div>
+
+    <div id="response">
+        <h3>Received Messages:</h3>
+        <ul id="messageList"></ul>
+
+        <h3>Sent Messages:</h3>
+        <ul id="sentMessages"></ul>
+    </div>
 </div>
 
 <script>
     var socket;
     var stompClient;
     var username;
+    var systemName = "live_sys";
 
-    // 连接到 WebSocket 服务
     function connect() {
         username = document.getElementById('username').value;
         if (!username) {
@@ -42,43 +214,62 @@
             return;
         }
 
-        // 创建 SockJS 连接，并传递 userId 和 tId
         socket = new SockJS('/message?userId=' + username + '&tId=123');
-        stompClient = Stomp.over(socket);  // 使用 STOMP 协议封装 SockJS
+        stompClient = Stomp.over(socket);
 
-        // 连接 STOMP
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
 
-
-            // 订阅 `/topic/greetings` 来接收广播消息
-            stompClient.subscribe('/topic/greetings', function(messageOutput) {
-                // 每次接收到消息时，将消息添加到列表中
-                var message = messageOutput.body;
-                displayMessage(message);
+            stompClient.subscribe('/topic/all', function (messageOutput) {
+                var message = JSON.parse(messageOutput.body);
+                displayReceivedMessage(message.content, "all");
             });
 
-            // 订阅特定用户的消息队列
             stompClient.subscribe('/user/' + username + '/queue/reply', function (messageOutput) {
-                // 每次接收到消息时，将消息添加到列表中
-                var message = messageOutput.body;
-                displayMessage(message);
+                var message = JSON.parse(messageOutput.body);
+                displayReceivedMessage(message.content, "reply");
             });
+
+            stompClient.subscribe('/topic/' + username, function (messageOutput) {
+                var message = JSON.parse(messageOutput.body);
+                displayReceivedMessage(message.content, username);
+            });
+
+            stompClient.subscribe('/topic/group/' + username, function (messageOutput) {
+                var message = JSON.parse(messageOutput.body);
+                displayReceivedMessage(message.content, username);
+            });
+            alert('连接成功')
         });
     }
 
-    // 发送广播消息
-    function sendMessage() {
+    function sendToAll() {
         var message = document.getElementById('message').value;
         if (!message) {
             alert("Message cannot be empty!");
             return;
         }
-        // 发送广播消息到 /api/message/sendMessage
-        stompClient.send("/api/message/sendMessage", {}, message);
+
+        var messageData = {
+            content: message,
+            systemName: systemName,
+            messageTargetType: 'all'
+        };
+
+        fetch('/api/message/sendToAll', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(messageData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                displaySentMessage(message);
+            })
+            .catch(error => console.error('Error:', error));
     }
 
-    // 向特定用户发送消息
     function sendToUser() {
         var message = document.getElementById('message').value;
         var receiver = document.getElementById('receiver').value;
@@ -87,16 +278,114 @@
             return;
         }
 
-        // 将 messagePayload 对象转为 JSON 格式
-        stompClient.send("/api/message/sendToUser", {"receiver": receiver}, message);
+        var messageData = {
+            content: message,
+            systemName: systemName,
+            receiveUserId: receiver,
+            messageTargetType: 'user'
+        };
+
+        fetch('/api/message/sendToUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(messageData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                displaySentMessage(message);
+            })
+            .catch(error => console.error('Error:', error));
     }
 
-    // 显示接收到的消息
-    function displayMessage(message) {
+    function sendToGroup() {
+        var message = document.getElementById('message').value;
+        var group = document.getElementById('group').value;
+        if (!message || !group) {
+            alert("Message and Group ID are required!");
+            return;
+        }
+
+        var messageData = {
+            content: message,
+            systemName: systemName,
+            messageTargetType: 'group',
+            group: group
+        };
+
+        fetch('/api/message/sendToGroup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(messageData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                displaySentMessage(message);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function sendToTopic() {
+        var message = document.getElementById('message').value;
+        var topic = document.getElementById('topic').value;
+        if (!message || !topic) {
+            alert("Message and Topic ID are required!");
+            return;
+        }
+
+        var messageData = {
+            content: message,
+            systemName: systemName,
+            messageTargetType: 'topic',
+            topicName: topic
+        };
+
+        fetch('/api/message/sendToTopic', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(messageData)
+        })
+            .then(response => response.json())
+            .then(data => {
+                displaySentMessage(message);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function displayReceivedMessage(message, type) {
         var messageList = document.getElementById('messageList');
         var li = document.createElement('li');
-        li.textContent = message;
-        messageList.appendChild(li); // 将新消息添加到消息列表中
+        li.classList.add(type === "all" ? 'message-send' : 'message-receive');
+
+        var messageInfo = document.createElement('div');
+        messageInfo.classList.add('message-info');
+        messageInfo.innerHTML = `<span class="message-sender">${type}</span><span class="message-time">${new Date().toLocaleTimeString()}</span>`;
+
+        var messageContent = document.createElement('div');
+        messageContent.classList.add('message-content');
+        messageContent.innerHTML = message;
+
+        li.appendChild(messageInfo);
+        li.appendChild(messageContent);
+        messageList.appendChild(li);
+    }
+
+    function displaySentMessage(message) {
+        var sentMessages = document.getElementById('sentMessages');
+        var li = document.createElement('li');
+        li.classList.add('message-send');
+
+        var messageContent = document.createElement('div');
+        messageContent.classList.add('message-content');
+        messageContent.innerHTML = message;
+
+        li.appendChild(messageContent);
+        sentMessages.appendChild(li);
     }
 </script>
 </body>

@@ -1,5 +1,6 @@
 package com.gallery.websoket.manager;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -7,6 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Component
+@Slf4j
 public class WebSocketSessionManager {
 
     // 使用 ConcurrentMap 管理 WebSocket 会话

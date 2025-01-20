@@ -49,7 +49,7 @@ public class WebSocketMessageConfig implements WebSocketMessageBrokerConfigurer 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 配置简单的消息代理
-        registry.enableSimpleBroker("/topic", "/user");  // 配置消息代理，支持广播到"/topic"和指定用户"/user"
+        registry.enableSimpleBroker("/topic", "/group", "/user");  // 配置消息代理，支持广播到"/topic"和指定用户"/user"
         registry.setApplicationDestinationPrefixes("/api/message");  // 配置客户端发送消息的路径
     }
 }
