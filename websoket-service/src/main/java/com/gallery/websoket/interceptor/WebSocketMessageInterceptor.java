@@ -28,7 +28,7 @@ public class WebSocketMessageInterceptor implements ChannelInterceptor {
         // 打印接收到的STOMP消息，用于调试
         log.info("接收到的消息: {}", message);
 
-        // 使用 simpMessageType 判断消息类型(连接 关闭连接 心跳 发送消息 都可以处理 不同的type)
+        // 使用 simpMessageType 判断消息类型(连接 订阅 关闭连接 心跳 发送消息 都可以处理 不同的type)
         SimpMessageType messageType = headerAccessor.getMessageType();
         if (messageType == SimpMessageType.MESSAGE) {
             Object payload = message.getPayload();
@@ -38,7 +38,6 @@ public class WebSocketMessageInterceptor implements ChannelInterceptor {
                 log.info("正在保存消息日志: {}", webSocketMessage);
                 saveMessageLog(webSocketMessage, "PENDING", null);
             }
-
         }
         return message;
     }
@@ -58,7 +57,7 @@ public class WebSocketMessageInterceptor implements ChannelInterceptor {
         // 打印消息发送结果（成功或失败）
         log.info("消息发送结果: {}, 是否成功发送: {}", message, sent);
 
-        // 使用 simpMessageType 判断消息类型(连接 关闭连接 心跳 发送消息 都可以处理 不同的type)
+        // 使用 simpMessageType 判断消息类型(连接 订阅 关闭连接 心跳 发送消息 都可以处理 不同的type)
         SimpMessageType messageType = headerAccessor.getMessageType();
         if (messageType == SimpMessageType.MESSAGE) {
             // 获取消息的载荷（实际数据）
