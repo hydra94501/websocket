@@ -5,10 +5,7 @@ import com.gallery.websoket.interceptor.WebSocketInterceptor;
 import com.gallery.websoket.interceptor.WebSocketMessageInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.websocket.servlet.WebSocketMessagingAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.converter.MessageConverter;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -140,7 +137,7 @@ public class WebSocketMessageConfig implements WebSocketMessageBrokerConfigurer 
         // 添加自定义消息转换器
         converters.add(0, myMessageConverter);
         // 如果需要 Jackson 支持，可以添加 MappingJackson2MessageConverter
-//        converters.add(new MappingJackson2MessageConverter());
+        //converters.add(new MappingJackson2MessageConverter());
         return true;
     }
 
@@ -188,35 +185,34 @@ public class WebSocketMessageConfig implements WebSocketMessageBrokerConfigurer 
 
     /**
      * registerStompEndpoints(StompEndpointRegistry registry)
-     *
      * 这个方法用于注册 WebSocket 的 STOMP 端点。在这个方法中，开发者可以定义 WebSocket 连接的路径和支持的跨域设置。
      * 默认实现为空方法，开发者需要重写它来注册端点。例如：registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();。
-     * configureWebSocketTransport(WebSocketTransportRegistration registry)
      *
+     * configureWebSocketTransport(WebSocketTransportRegistration registry)
      * 这个方法用于配置 WebSocket 传输的相关设置，例如设置 WebSocket 的传输消息的缓冲区大小、最大消息大小、心跳时间等。
      * 默认实现为空方法，开发者可以根据需求进行自定义配置。
-     * configureClientInboundChannel(ChannelRegistration registration)
      *
+     * configureClientInboundChannel(ChannelRegistration registration)
      * 该方法用于配置 WebSocket 客户端的入站消息通道，控制消息的接收。通过 ChannelRegistration 可以设置消息的处理机制，比如添加拦截器、消息过滤器等。
      * 默认实现为空方法，开发者可以重写该方法来对入站消息通道进行定制化配置。
-     * configureClientOutboundChannel(ChannelRegistration registration)
      *
+     * configureClientOutboundChannel(ChannelRegistration registration)
      * 该方法用于配置 WebSocket 客户端的出站消息通道，控制消息的发送。通过 ChannelRegistration，开发者可以配置发送消息时的处理机制，例如设置消息的编码、添加拦截器等。
      * 默认实现为空方法，开发者可以重写该方法来定制出站消息通道的行为。
-     * addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers)
      *
+     * addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers)
      * 该方法允许开发者向 WebSocket 消息的处理方法中添加自定义参数解析器。可以在这里注册新的参数解析器，将 WebSocket 消息体转换成特定对象，供处理方法使用。
      * 默认实现为空方法，开发者可以通过实现该方法来自定义解析器的注册。
-     * addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers)
      *
+     * addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers)
      * 该方法允许开发者向 WebSocket 消息的处理方法中添加自定义的返回值处理器。返回值处理器可以用于将处理方法返回的对象转换成 WebSocket 消息体。
      * 默认实现为空方法，开发者可以实现该方法来处理 WebSocket 处理方法的返回值。
-     * configureMessageConverters(List<MessageConverter> messageConverters)
      *
+     * configureMessageConverters(List<MessageConverter> messageConverters)
      * 该方法用于配置消息转换器，用于 WebSocket 消息的编码和解码。通过 messageConverters，开发者可以定义消息如何转换为适当的格式（例如 JSON、XML 或自定义格式）。
      * 默认实现返回 true，表示使用默认的消息转换器，开发者可以重写该方法并返回 false 来禁用默认配置，或者返回 true 并提供自定义的转换器。
-     * configureMessageBroker(MessageBrokerRegistry registry)
      *
+     * configureMessageBroker(MessageBrokerRegistry registry)
      * 该方法用于配置 WebSocket 消息代理的相关设置，例如启用消息代理、定义消息代理的目标前缀（例如 /topic、/queue）等。
      * 默认实现为空方法，开发者可以通过重写该方法来自定义消息代理的配置。
      */
