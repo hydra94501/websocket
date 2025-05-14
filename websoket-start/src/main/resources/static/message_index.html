@@ -209,7 +209,7 @@
             messageTargetType: 'user'
         };
 
-        fetch('/api/message/sendToUser', {
+        fetch('/websoket/api/message/sendToUser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -239,7 +239,7 @@
             groupName: group
         };
 
-        fetch('/api/message/sendToGroup', {
+        fetch('/websoket/api/message/sendToGroup', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -269,7 +269,7 @@
             topicName: topic
         };
 
-        fetch('/api/message/sendToTopic', {
+        fetch('/websoket/api/message/sendToTopic', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
