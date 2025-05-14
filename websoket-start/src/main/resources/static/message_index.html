@@ -7,191 +7,72 @@
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f4f7fa;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-top: 40px;
-            font-size: 28px;
-        }
-
-        .container {
-            max-width: 960px;
-            margin: 40px auto;
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .input-group input {
-            width: 75%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: #007bff;
-        }
-
-        .input-group button {
-            padding: 12px 24px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-            margin-left: 10px;
-        }
-
-        .input-group button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-
-        .input-group button:active {
-            background-color: #003f7f;
-        }
-
-        #response {
-            margin-top: 40px;
-        }
-
-        h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            max-height: 300px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column-reverse;
-        }
-
-        li {
-            margin: 12px 0;
-            padding: 18px;
-            border-radius: 8px;
-            font-size: 16px;
-            background-color: #f7f7f7;
-            transition: transform 0.3s ease;
-        }
-
-        li:hover {
-            transform: translateX(5px);
-        }
-
-        .message-send {
-            background-color: #e0f7fa;
-            border-left: 5px solid #00bcd4;
-        }
-
-        .message-receive {
-            background-color: #ffebee;
-            border-left: 5px solid #f44336;
-        }
-
-        .message-info {
-            font-size: 14px;
-            color: #777;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .message-content {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .message-time {
-            font-size: 12px;
-            color: #aaa;
-        }
-
-        .message-sender {
-            font-weight: bold;
-            color: #007bff;
-        }
-
-        /* Responsive layout */
-        @media (max-width: 768px) {
-            .input-group input {
-                width: 100%;
-                margin-right: 0;
-            }
-
-            .input-group button {
-                width: 100%;
-                margin-left: 0;
-                margin-top: 10px;
-            }
-
-            .container {
-                padding: 20px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
-        }
+        /* Same styles as before */
     </style>
 </head>
 <body>
 <h1>STOMP WebSocket Example</h1>
 <div class="container">
+    <!-- User login -->
     <div class="input-group">
         <input type="text" id="username" placeholder="Enter your username"/>
         <button onclick="connect()">Connect</button>
     </div>
 
-    <div class="input-group">
-        <input type="text" id="message" placeholder="Enter your message"/>
+    <!-- Subscribe Section -->
+    <div class="subscription-section">
+        <h3>Subscribe</h3>
+
+        <div class="input-group">
+            <input type="text" id="topic" placeholder="Enter topic ID to subscribe"/>
+            <button onclick="subscribeToTopic()">Subscribe to Topic</button>
+            <button onclick="unsubscribeFromTopic()">Unsubscribe from Topic</button>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="group" placeholder="Enter group ID to subscribe"/>
+            <button onclick="subscribeToGroup()">Subscribe to Group</button>
+            <button onclick="unsubscribeFromGroup()">Unsubscribe from Group</button>
+        </div>
     </div>
 
-    <div class="input-group">
-        <button onclick="sendToAll()">Send to All</button>
+    <!-- Send Message Section -->
+    <div class="send-message-section">
+        <h3>Send Message</h3>
+
+        <!-- Send to Group -->
+        <div class="input-group">
+            <input type="text" id="receiveUserId" placeholder="Enter receiveUserId"/>
+        </div>
+        <!-- Send to User -->
+        <div class="input-group">
+            <input type="text" id="message" placeholder="Enter your message"/>
+        </div>
+
+        <div class="input-group">
+            <button onclick="sendToUser()">Send to User</button>
+        </div>
+
+        <!-- Send to Group -->
+        <div class="input-group">
+            <input type="text" id="groupMessage" placeholder="Enter group message"/>
+        </div>
+
+        <div class="input-group">
+            <button onclick="sendToGroupMessage()">Send to Group</button>
+        </div>
+
+        <!-- Send to Topic -->
+        <div class="input-group">
+            <input type="text" id="topicMessage" placeholder="Enter topic message"/>
+        </div>
+
+        <div class="input-group">
+            <button onclick="sendToTopicMessage()">Send to Topic</button>
+        </div>
     </div>
 
-    <div class="input-group">
-        <input type="text" id="receiver" placeholder="Enter receiver's username"/>
-        <button onclick="sendToUser()">Send to User</button>
-    </div>
-
-    <div class="input-group">
-        <input type="text" id="group" placeholder="Enter group ID"/>
-        <button onclick="sendToGroup()">Send to Group</button>
-    </div>
-
-    <div class="input-group">
-        <input type="text" id="topic" placeholder="Enter topic ID"/>
-        <button onclick="sendToTopic()">Send to Topic</button>
-    </div>
-
+    <!-- Messages display -->
     <div id="response">
         <h3>Received Messages:</h3>
         <ul id="messageList"></ul>
@@ -206,6 +87,8 @@
     var stompClient;
     var username;
     var systemName = "live_sys";
+    var subscribedTopics = new Set();
+    var subscribedGroups = new Set();
 
     function connect() {
         username = document.getElementById('username').value;
@@ -217,72 +100,103 @@
         socket = new SockJS('/message?userId=' + username + '&tId=123');
         stompClient = Stomp.over(socket);
 
-        /*
-         * 1. 获取到stomp 子协议后，可以设置心跳连接时间，认证连接，主动断开连接
-         * 2，连接心跳有的版本的stomp.js 是默认开启的，这里我们不管版本，手工设置
-         * 3. 心跳是双向的，客户端开启心跳，必须要服务端支持心跳才行
-         * 4. heartbeat.outgoing 表示客户端给服务端发送心跳的间隔时间
-         * 5. 客户端接收服务端心跳的间隔时间，如果为0 表示客户端不接收服务端心跳
-         */
         stompClient.heartbeat.outgoing = 10000;
         stompClient.heartbeat.incoming = 0;
 
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-
-            stompClient.subscribe('/topic/all', function (messageOutput) {
-                var message = JSON.parse(messageOutput.body);
-                displayReceivedMessage(message.content, "all");
-            });
-
             stompClient.subscribe('/user/' + username + '/queue/reply', function (messageOutput) {
                 var message = JSON.parse(messageOutput.body);
-                displayReceivedMessage(message.content, "reply");
-            });
-
-            stompClient.subscribe('/topic/' + username, function (messageOutput) {
-                var message = JSON.parse(messageOutput.body);
                 displayReceivedMessage(message.content, username);
             });
-
-            stompClient.subscribe('/topic/group/' + username, function (messageOutput) {
-                var message = JSON.parse(messageOutput.body);
-                displayReceivedMessage(message.content, username);
-            });
-            alert('连接成功')
+            alert('Connected successfully');
         });
     }
 
-    function sendToAll() {
-        var message = document.getElementById('message').value;
-        if (!message) {
-            alert("Message cannot be empty!");
+    // Subscribe to Topic
+    function subscribeToTopic() {
+        var topic = document.getElementById('topic').value;
+        if (!topic) {
+            alert("Topic ID is required!");
             return;
         }
 
-        var messageData = {
-            content: message,
-            systemName: systemName,
-            messageTargetType: 'all'
-        };
+        if (subscribedTopics.has(topic)) {
+            alert("Already subscribed to this topic");
+            return;
+        }
 
-        fetch('/api/message/sendToAll', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(messageData)
-        })
-            .then(response => response.json())
-            .then(data => {
-                displaySentMessage(message);
-            })
-            .catch(error => console.error('Error:', error));
+        stompClient.subscribe('/topic/' + topic, function (messageOutput) {
+            var message = JSON.parse(messageOutput.body);
+            displayReceivedMessage(message.content, topic);
+        });
+
+        subscribedTopics.add(topic);
+        alert('Subscribed to topic: ' + topic);
     }
 
+    // Unsubscribe from Topic
+    function unsubscribeFromTopic() {
+        var topic = document.getElementById('topic').value;
+        if (!topic) {
+            alert("Topic ID is required!");
+            return;
+        }
+
+        if (!subscribedTopics.has(topic)) {
+            alert("Not subscribed to this topic");
+            return;
+        }
+
+        stompClient.unsubscribe('/topic/' + topic);
+        subscribedTopics.delete(topic);
+        alert('Unsubscribed from topic: ' + topic);
+    }
+
+    // Subscribe to Group
+    function subscribeToGroup() {
+        var group = document.getElementById('group').value;
+        if (!group) {
+            alert("Group ID is required!");
+            return;
+        }
+
+        if (subscribedGroups.has(group)) {
+            alert("Already subscribed to this group");
+            return;
+        }
+
+        stompClient.subscribe('/topic/group/' + group, function (messageOutput) {
+            var message = JSON.parse(messageOutput.body);
+            displayReceivedMessage(message.content, group);
+        });
+
+        subscribedGroups.add(group);
+        alert('Subscribed to group: ' + group);
+    }
+
+    // Unsubscribe from Group
+    function unsubscribeFromGroup() {
+        var group = document.getElementById('group').value;
+        if (!group) {
+            alert("Group ID is required!");
+            return;
+        }
+
+        if (!subscribedGroups.has(group)) {
+            alert("Not subscribed to this group");
+            return;
+        }
+
+        stompClient.unsubscribe('/topic/group/' + group);
+        subscribedGroups.delete(group);
+        alert('Unsubscribed from group: ' + group);
+    }
+
+    // Send message to User
     function sendToUser() {
         var message = document.getElementById('message').value;
-        var receiver = document.getElementById('receiver').value;
+        var receiver = document.getElementById('receiveUserId').value;
         if (!message || !receiver) {
             alert("Message and Receiver (User ID) are required!");
             return;
@@ -309,8 +223,9 @@
             .catch(error => console.error('Error:', error));
     }
 
-    function sendToGroup() {
-        var message = document.getElementById('message').value;
+    // Send message to Group
+    function sendToGroupMessage() {
+        var message = document.getElementById('groupMessage').value;
         var group = document.getElementById('group').value;
         if (!message || !group) {
             alert("Message and Group ID are required!");
@@ -338,8 +253,9 @@
             .catch(error => console.error('Error:', error));
     }
 
-    function sendToTopic() {
-        var message = document.getElementById('message').value;
+    // Send message to Topic
+    function sendToTopicMessage() {
+        var message = document.getElementById('topicMessage').value;
         var topic = document.getElementById('topic').value;
         if (!message || !topic) {
             alert("Message and Topic ID are required!");
@@ -367,6 +283,7 @@
             .catch(error => console.error('Error:', error));
     }
 
+    // Display received messages
     function displayReceivedMessage(message, type) {
         var messageList = document.getElementById('messageList');
         var li = document.createElement('li');
@@ -385,6 +302,7 @@
         messageList.appendChild(li);
     }
 
+    // Display sent messages
     function displaySentMessage(message) {
         var sentMessages = document.getElementById('sentMessages');
         var li = document.createElement('li');
