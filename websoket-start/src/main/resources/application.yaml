@@ -1,5 +1,5 @@
 server:
-  port: 9092
+  port: 9093
   tomcat:
     max-connections: 100000           # 设置最大连接数
     max-threads: 5000                # 设置最大线程数
